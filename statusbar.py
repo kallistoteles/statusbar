@@ -1,16 +1,18 @@
-#!/usr/bin/python
+#!/usr/bin/python3
+
+# Import external libraries
 import tkinter
 import time
 import subprocess
 import alsaaudio
 
+# Set global variables
 m = alsaaudio.Mixer()
-global vol_before_mute 
 vol_before_mute = 0
-global last_active
 last_active = time.time()
 
 def tick():
+
 	#get current battery status
 	f = open('/sys/class/power_supply/BAT0/capacity', 'r')
 	battery_capacity = int(f.read().strip())
@@ -28,11 +30,10 @@ def tick():
 			wifi_quality = 'w'+str(int(int(line[23:25])*100 / int(line[26:28]))) + '%'
     
 	# get the current local time from the PC
-	#    time_string = time.strftime('%Y-%m-%d %H:%M:%S')
 	time_string = time.strftime('%H:%M')
 
 	output_string = '| ' + time_string + ' | ' + battery_capacity + ' | ' + wifi_quality + ' |'
-	#print(output_string)
+
 	# if time string has changed, update it
 	clock.config(text=output_string)
 	clock.after(1000, tick)
@@ -71,12 +72,10 @@ def volume_mute(event):
 
 root = tkinter.Tk()
 root.overrideredirect(1)
-#root.wait_visibility(root)
 root.wm_attributes("-alpha", 0.0)
 root.configure(background='#1B1B1F')
 root.geometry('155x15+%d+0' % int(root.winfo_screenwidth()*.8))
 clock = tkinter.Label(root, font=('arial', 8), bg='#1B1B1F', fg="#AEA684")
-#clock = tkinter.Label(root, font=('arial', 8), fg="#AEA684")
 clock.bind("<Button-1>", volume_mute)
 clock.bind("<Button-3>", end_application)
 clock.bind("<Button-4>", volume_up)
