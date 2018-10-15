@@ -1,0 +1,2 @@
+# statusbar
+personal statusbar
